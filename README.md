@@ -62,7 +62,7 @@ To run the application, execute the following command in your terminal from the 
 
 ```bash
 streamlit run app.py
-
+```
 Your web browser will automatically open a new tab with the chatbot interface. Interact with the chatbot to complete the screening process. Upon completion, the candidate's data will be saved to `candidate_data.csv`.
 
 ---
@@ -98,3 +98,4 @@ The application uses targeted prompts at different stages to guide the LLM's beh
 
 - **Challenge:** Preventing the progress bar from crashing if the LLM generated more or fewer questions than anticipated.
   - **Solution:** Refactored the progress tracking logic to be dynamic. The total number of steps is now calculated based on the *actual* number of questions returned by the LLM. A `min()` function was also used as a safeguard to prevent the progress value from ever exceeding 100%, making the application more robust against unpredictable LLM outputs.
+
