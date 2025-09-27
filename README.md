@@ -62,3 +62,39 @@ To run the application, execute the following command in your terminal from the 
 
 ```bash
 streamlit run app.py
+
+Your web browser will automatically open a new tab with the chatbot interface. Interact with the chatbot to complete the screening process. Upon completion, the candidate's data will be saved to `candidate_data.csv`.
+
+---
+
+## 4. Technical Details
+
+- **Language:** Python
+- **Libraries:**
+    - `streamlit`: For the frontend web interface.
+    - `google-generativeai`: To interact with the Gemini Pro LLM.
+    - `pandas`: For saving candidate data to a CSV file.
+    - `python-dotenv`: To manage environment variables securely.
+- **LLM Model:** Google Gemini-Pro
+
+---
+
+## 5. Prompt Design
+
+The application uses targeted prompts at different stages to guide the LLM's behavior:
+
+- **Initial Persona:** The chat session is initialized with a system prompt that defines the bot's role as "TalentScout," a professional AI hiring assistant, and outlines the entire conversation flow.
+- **Question Generation:** When the bot has collected the candidate's tech stack, it uses a highly specific prompt to the LLM, instructing it to:
+    - Generate a precise number of technical questions.
+    - Tailor them to the candidate's skills.
+    - Format them as a numbered list for easy parsing.
+
+---
+
+## 6. Challenges & Solutions
+
+- **Challenge:** Maintaining conversation context in Streamlit, which re-runs its script on every interaction.
+  - **Solution:** Utilized `st.session_state` to store all conversational variables, including the chat history, current conversation stage, and collected candidate data, ensuring persistence across re-runs.
+
+- **Challenge:** Preventing the progress bar from crashing if the LLM generated more or fewer questions than anticipated.
+  - **Solution:** Refactored the progress tracking logic to be dynamic. The total number of steps is now calculated based on the *actual* number of questions returned by the LLM. A `min()` function was also used as a safeguard to prevent the progress value from ever exceeding 100%, making the application more robust against unpredictable LLM outputs.
